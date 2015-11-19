@@ -1,79 +1,565 @@
-set background=dark
+" This scheme was created by CSApproxSnapshot
+" on Wed, 18 Nov 2015
 
 hi clear
-
 if exists("syntax_on")
     syntax reset
 endif
 
-let colors_name = "freya"
-
-hi Normal ctermbg=0 ctermfg=7 cterm=none guibg=#2a2a2a guifg=#dcdccc gui=none
-
-hi Cursor guibg=fg guifg=bg gui=none
-hi CursorColumn guibg=#3f3f3f gui=none
-hi CursorLine guibg=#3f3f3f gui=none
-hi DiffAdd guibg=#008b00 guifg=fg gui=none
-hi DiffChange guibg=#00008b guifg=fg gui=none
-hi DiffDelete guibg=#8b0000 guifg=fg gui=none
-hi DiffText guibg=#0000cd guifg=fg gui=bold
-hi Directory guibg=bg guifg=#d4b064 gui=none
-hi ErrorMsg guibg=bg guifg=#f07070 gui=bold
-hi FoldColumn ctermbg=bg guibg=bg guifg=#c2b680 gui=none
-hi Folded guibg=#101010 guifg=#c2b680 gui=none
-hi IncSearch guibg=#866a4f guifg=fg gui=none
-hi LineNr guibg=bg guifg=#9f8f80 gui=none
-hi ModeMsg guibg=bg guifg=fg gui=bold
-hi MoreMsg guibg=bg guifg=#dabfa5 gui=bold
-hi NonText ctermfg=8 guibg=bg guifg=#9f8f80 gui=bold
-hi Pmenu guibg=#a78869 guifg=#000000 gui=none
-hi PmenuSbar guibg=#B99F86 guifg=fg gui=none
-hi PmenuSel guibg=#c0aa94 guifg=bg gui=none
-hi PmenuThumb guibg=#f7f7f1 guifg=bg gui=none
-hi Question guibg=bg guifg=#dabfa5 gui=bold
-hi Search guibg=#c0aa94 guifg=bg gui=none
-hi SignColumn ctermbg=bg guibg=bg guifg=#c2b680 gui=none
-hi SpecialKey guibg=bg guifg=#d4b064 gui=none
-if has("spell")
-    hi SpellBad guisp=#f07070 gui=undercurl
-    hi SpellCap guisp=#7070f0 gui=undercurl
-    hi SpellLocal guisp=#70f0f0 gui=undercurl
-    hi SpellRare guisp=#f070f0 gui=undercurl
-endif
-hi StatusLine ctermbg=7 ctermfg=0 guibg=#736559 guifg=#f7f7f1 gui=bold
-hi StatusLineNC ctermbg=8 ctermfg=0 guibg=#564d43 guifg=#f7f7f1 gui=none
-hi TabLine guibg=#564d43 guifg=#f7f7f1 gui=underline
-hi TabLineFill guibg=#564d43 guifg=#f7f7f1 gui=underline
-hi TabLineSel guibg=bg guifg=#f7f7f1 gui=bold
-hi Title ctermbg=0 ctermfg=15 guifg=#f7f7f1 gui=bold
-hi VertSplit ctermbg=7 ctermfg=0 guibg=#564d43 guifg=#f7f7f1 gui=none
-if version >= 700
-    hi Visual ctermbg=7 ctermfg=0 guibg=#5f5f5f gui=none
+if v:version < 700
+    let g:colors_name = expand("<sfile>:t:r")
+    command! -nargs=+ CSAHi exe "hi" substitute(substitute(<q-args>, "undercurl", "underline", "g"), "guisp\\S\\+", "", "g")
 else
-    hi Visual ctermbg=7 ctermfg=0 guibg=#5f5f5f guifg=fg gui=none
+    let g:colors_name = expand("<sfile>:t:r")
+    command! -nargs=+ CSAHi exe "hi" <q-args>
 endif
-hi VisualNOS guibg=bg guifg=#c0aa94 gui=bold,underline
-hi WarningMsg guibg=bg guifg=#f07070 gui=none
-hi WildMenu guibg=#c0aa94 guifg=bg gui=bold
 
-hi Comment guibg=bg guifg=#c2b680 gui=none
-hi Constant guibg=bg guifg=#afe091 gui=none
-hi Error guibg=bg guifg=#f07070 gui=none
-hi Identifier guibg=bg guifg=#dabfa5 gui=none
-hi Ignore guibg=bg guifg=bg gui=none
-hi lCursor guibg=#c0aa94 guifg=bg gui=none
-hi MatchParen guibg=#008b8b gui=none
-hi PreProc guibg=bg guifg=#c2aed0 gui=none
-hi Special guibg=bg guifg=#d4b064 gui=none
-hi Statement guibg=bg guifg=#e0af91 gui=bold
-hi Todo guibg=#aed0ae guifg=bg gui=none
-hi Type guibg=bg guifg=#dabfa5 gui=bold
-hi Underlined guibg=bg guifg=#d4b064 gui=underline
+function! s:old_kde()
+  " Konsole only used its own palette up til KDE 4.2.0
+  if executable('kde4-config') && system('kde4-config --kde-version') =~ '^4.[10].'
+    return 1
+  elseif executable('kde-config') && system('kde-config --version') =~# 'KDE: 3.'
+    return 1
+  else
+    return 0
+  endif
+endfunction
 
-hi htmlBold ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=bold
-hi htmlItalic ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=italic
-hi htmlUnderline ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=underline
-hi htmlBoldItalic ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=bold,italic
-hi htmlBoldUnderline ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=bold,underline
-hi htmlBoldUnderlineItalic ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=bold,underline,italic
-hi htmlUnderlineItalic ctermbg=0 ctermfg=15 guibg=bg guifg=fg gui=underline,italic
+if 0
+elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^screen") && exists("g:CSApprox_konsole") && g:CSApprox_konsole) || (&term =~? "^konsole" && s:old_kde())
+    CSAHi Normal term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=NONE guibg=#2a2a2a guifg=#dcdccc
+    CSAHi vimEcho term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIf term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIsCommand term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExtCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFilter term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSet term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiCtermColor term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCmdSep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAuSyntax term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi PreProc term=NONE cterm=NONE ctermbg=235 ctermfg=146 gui=NONE guibg=bg guifg=#c2aed0
+    CSAHi Type term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi Underlined term=underline cterm=underline ctermbg=235 ctermfg=179 gui=underline guibg=bg guifg=#d4b064
+    CSAHi Ignore term=NONE cterm=NONE ctermbg=235 ctermfg=235 gui=NONE guibg=bg guifg=bg
+    CSAHi Error term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi Todo term=NONE cterm=NONE ctermbg=151 ctermfg=235 gui=NONE guibg=#aed0ae guifg=bg
+    CSAHi vimNormCmds term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoCmdSpace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi pythonSync term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPythonRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi SpecialKey term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi TermCursor term=reverse cterm=reverse ctermbg=bg ctermfg=fg gui=reverse guibg=bg guifg=fg
+    CSAHi TermCursorNC term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi NonText term=bold cterm=bold ctermbg=235 ctermfg=138 gui=bold guibg=bg guifg=#9f8f80
+    CSAHi Directory term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi ErrorMsg term=bold cterm=bold ctermbg=235 ctermfg=203 gui=bold guibg=bg guifg=#f07070
+    CSAHi IncSearch term=NONE cterm=NONE ctermbg=95 ctermfg=188 gui=NONE guibg=#866a4f guifg=fg
+    CSAHi Search term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi vimCollection term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstPat term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep4 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimClusterName term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynLine term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPatRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimOperParen term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi Cursor term=NONE cterm=NONE ctermbg=188 ctermfg=235 gui=NONE guibg=fg guifg=bg
+    CSAHi VisualNOS term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=144 gui=bold,underline guibg=bg guifg=#c0aa94
+    CSAHi lCursor term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi htmlBold term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi htmlItalic term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=italic guibg=bg guifg=fg
+    CSAHi htmlUnderline term=underline cterm=underline ctermbg=235 ctermfg=188 gui=underline guibg=bg guifg=fg
+    CSAHi SpellBad term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellCap term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellRare term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellLocal term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi Pmenu term=NONE cterm=NONE ctermbg=137 ctermfg=16 gui=NONE guibg=#a78869 guifg=#000000
+    CSAHi PmenuSel term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi PmenuSbar term=NONE cterm=NONE ctermbg=144 ctermfg=188 gui=NONE guibg=#B99F86 guifg=fg
+    CSAHi PmenuThumb term=NONE cterm=NONE ctermbg=231 ctermfg=235 gui=NONE guibg=#f7f7f1 guifg=bg
+    CSAHi TabLine term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi TabLineSel term=bold cterm=bold ctermbg=235 ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi vimGroupList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuPriority term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBody term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBlank term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimEscapeBrace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSetEqual term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinebreak term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRange term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiTermcap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserAttrbError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynKeyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFiletype term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMatchRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchCchar term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchGroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCollClass term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi MoreMsg term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi ModeMsg term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi LineNr term=NONE cterm=NONE ctermbg=235 ctermfg=138 gui=NONE guibg=bg guifg=#9f8f80
+    CSAHi CursorLineNr term=bold cterm=bold ctermbg=bg ctermfg=226 gui=bold guibg=bg guifg=Yellow
+    CSAHi Question term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi StatusLine term=bold cterm=bold ctermbg=59 ctermfg=231 gui=bold guibg=#736559 guifg=#f7f7f1
+    CSAHi StatusLineNC term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi VertSplit term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi Title term=bold cterm=bold ctermbg=bg ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi Visual term=NONE cterm=NONE ctermbg=59 ctermfg=fg gui=NONE guibg=#5f5f5f guifg=fg
+    CSAHi vimAutoCmdSfxList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCommentTitleLeader term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiLink term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoEventList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlUnderlineItalic term=underline cterm=underline ctermbg=235 ctermfg=188 gui=italic,underline guibg=bg guifg=fg
+    CSAHi vimGlobal term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiGuiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi TabLineFill term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi CursorColumn term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi CursorLine term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi ColorColumn term=NONE cterm=NONE ctermbg=88 ctermfg=fg gui=NONE guibg=DarkRed guifg=fg
+    CSAHi MatchParen term=NONE cterm=NONE ctermbg=30 ctermfg=fg gui=NONE guibg=#008b8b guifg=fg
+    CSAHi Comment term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Constant term=NONE cterm=NONE ctermbg=235 ctermfg=150 gui=NONE guibg=bg guifg=#afe091
+    CSAHi Special term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi Identifier term=NONE cterm=NONE ctermbg=235 ctermfg=181 gui=NONE guibg=bg guifg=#dabfa5
+    CSAHi Statement term=bold cterm=bold ctermbg=235 ctermfg=180 gui=bold guibg=bg guifg=#e0af91
+    CSAHi pythonSpaceError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiKeyList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimStdPlugin term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhsExtend term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExecute term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldItalic term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold,italic guibg=bg guifg=fg
+    CSAHi vimFunction term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderline term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,underline guibg=bg guifg=fg
+    CSAHi vimSynRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynPatMod term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLines term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncMatch term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderlineItalic term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,italic,underline guibg=bg guifg=fg
+    CSAHi vimMapLhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinecont term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi WarningMsg term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi WildMenu term=bold cterm=bold ctermbg=144 ctermfg=235 gui=bold guibg=#c0aa94 guifg=bg
+    CSAHi Folded term=NONE cterm=NONE ctermbg=233 ctermfg=144 gui=NONE guibg=#101010 guifg=#c2b680
+    CSAHi FoldColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi DiffAdd term=NONE cterm=NONE ctermbg=28 ctermfg=188 gui=NONE guibg=#008b00 guifg=fg
+    CSAHi DiffChange term=NONE cterm=NONE ctermbg=18 ctermfg=188 gui=NONE guibg=#00008b guifg=fg
+    CSAHi DiffDelete term=NONE cterm=NONE ctermbg=88 ctermfg=188 gui=NONE guibg=#8b0000 guifg=fg
+    CSAHi DiffText term=bold cterm=bold ctermbg=20 ctermfg=188 gui=bold guibg=#0000cd guifg=fg
+    CSAHi SignColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Conceal term=NONE cterm=NONE ctermbg=248 ctermfg=252 gui=NONE guibg=DarkGrey guifg=LightGrey
+    CSAHi vimMenuMap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupSyncA term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+elseif has("gui_running") || (&t_Co == 256 && (&term ==# "xterm" || &term =~# "^screen") && exists("g:CSApprox_eterm") && g:CSApprox_eterm) || &term =~? "^eterm"
+    CSAHi Normal term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=NONE guibg=#2a2a2a guifg=#dcdccc
+    CSAHi vimEcho term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIf term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIsCommand term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExtCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFilter term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSet term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiCtermColor term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCmdSep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAuSyntax term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi PreProc term=NONE cterm=NONE ctermbg=235 ctermfg=146 gui=NONE guibg=bg guifg=#c2aed0
+    CSAHi Type term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi Underlined term=underline cterm=underline ctermbg=235 ctermfg=179 gui=underline guibg=bg guifg=#d4b064
+    CSAHi Ignore term=NONE cterm=NONE ctermbg=235 ctermfg=235 gui=NONE guibg=bg guifg=bg
+    CSAHi Error term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi Todo term=NONE cterm=NONE ctermbg=151 ctermfg=235 gui=NONE guibg=#aed0ae guifg=bg
+    CSAHi vimNormCmds term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoCmdSpace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi pythonSync term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPythonRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi SpecialKey term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi TermCursor term=reverse cterm=reverse ctermbg=bg ctermfg=fg gui=reverse guibg=bg guifg=fg
+    CSAHi TermCursorNC term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi NonText term=bold cterm=bold ctermbg=235 ctermfg=138 gui=bold guibg=bg guifg=#9f8f80
+    CSAHi Directory term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi ErrorMsg term=bold cterm=bold ctermbg=235 ctermfg=203 gui=bold guibg=bg guifg=#f07070
+    CSAHi IncSearch term=NONE cterm=NONE ctermbg=95 ctermfg=188 gui=NONE guibg=#866a4f guifg=fg
+    CSAHi Search term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi vimCollection term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstPat term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep4 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimClusterName term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynLine term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPatRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimOperParen term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi Cursor term=NONE cterm=NONE ctermbg=188 ctermfg=235 gui=NONE guibg=fg guifg=bg
+    CSAHi VisualNOS term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=144 gui=bold,underline guibg=bg guifg=#c0aa94
+    CSAHi lCursor term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi htmlBold term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi htmlItalic term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=italic guibg=bg guifg=fg
+    CSAHi htmlUnderline term=underline cterm=underline ctermbg=235 ctermfg=188 gui=underline guibg=bg guifg=fg
+    CSAHi SpellBad term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellCap term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellRare term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellLocal term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi Pmenu term=NONE cterm=NONE ctermbg=137 ctermfg=16 gui=NONE guibg=#a78869 guifg=#000000
+    CSAHi PmenuSel term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi PmenuSbar term=NONE cterm=NONE ctermbg=144 ctermfg=188 gui=NONE guibg=#B99F86 guifg=fg
+    CSAHi PmenuThumb term=NONE cterm=NONE ctermbg=231 ctermfg=235 gui=NONE guibg=#f7f7f1 guifg=bg
+    CSAHi TabLine term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi TabLineSel term=bold cterm=bold ctermbg=235 ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi vimGroupList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuPriority term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBody term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBlank term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimEscapeBrace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSetEqual term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinebreak term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRange term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiTermcap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserAttrbError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynKeyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFiletype term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMatchRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchCchar term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchGroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCollClass term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi MoreMsg term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi ModeMsg term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi LineNr term=NONE cterm=NONE ctermbg=235 ctermfg=138 gui=NONE guibg=bg guifg=#9f8f80
+    CSAHi CursorLineNr term=bold cterm=bold ctermbg=bg ctermfg=226 gui=bold guibg=bg guifg=Yellow
+    CSAHi Question term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi StatusLine term=bold cterm=bold ctermbg=59 ctermfg=231 gui=bold guibg=#736559 guifg=#f7f7f1
+    CSAHi StatusLineNC term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi VertSplit term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi Title term=bold cterm=bold ctermbg=bg ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi Visual term=NONE cterm=NONE ctermbg=59 ctermfg=fg gui=NONE guibg=#5f5f5f guifg=fg
+    CSAHi vimAutoCmdSfxList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCommentTitleLeader term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiLink term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoEventList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlUnderlineItalic term=underline cterm=underline ctermbg=235 ctermfg=188 gui=italic,underline guibg=bg guifg=fg
+    CSAHi vimGlobal term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiGuiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi TabLineFill term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi CursorColumn term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi CursorLine term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi ColorColumn term=NONE cterm=NONE ctermbg=88 ctermfg=fg gui=NONE guibg=DarkRed guifg=fg
+    CSAHi MatchParen term=NONE cterm=NONE ctermbg=30 ctermfg=fg gui=NONE guibg=#008b8b guifg=fg
+    CSAHi Comment term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Constant term=NONE cterm=NONE ctermbg=235 ctermfg=150 gui=NONE guibg=bg guifg=#afe091
+    CSAHi Special term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi Identifier term=NONE cterm=NONE ctermbg=235 ctermfg=181 gui=NONE guibg=bg guifg=#dabfa5
+    CSAHi Statement term=bold cterm=bold ctermbg=235 ctermfg=180 gui=bold guibg=bg guifg=#e0af91
+    CSAHi pythonSpaceError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiKeyList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimStdPlugin term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhsExtend term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExecute term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldItalic term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold,italic guibg=bg guifg=fg
+    CSAHi vimFunction term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderline term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,underline guibg=bg guifg=fg
+    CSAHi vimSynRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynPatMod term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLines term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncMatch term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderlineItalic term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,italic,underline guibg=bg guifg=fg
+    CSAHi vimMapLhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinecont term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi WarningMsg term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi WildMenu term=bold cterm=bold ctermbg=144 ctermfg=235 gui=bold guibg=#c0aa94 guifg=bg
+    CSAHi Folded term=NONE cterm=NONE ctermbg=233 ctermfg=144 gui=NONE guibg=#101010 guifg=#c2b680
+    CSAHi FoldColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi DiffAdd term=NONE cterm=NONE ctermbg=28 ctermfg=188 gui=NONE guibg=#008b00 guifg=fg
+    CSAHi DiffChange term=NONE cterm=NONE ctermbg=18 ctermfg=188 gui=NONE guibg=#00008b guifg=fg
+    CSAHi DiffDelete term=NONE cterm=NONE ctermbg=88 ctermfg=188 gui=NONE guibg=#8b0000 guifg=fg
+    CSAHi DiffText term=bold cterm=bold ctermbg=20 ctermfg=188 gui=bold guibg=#0000cd guifg=fg
+    CSAHi SignColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Conceal term=NONE cterm=NONE ctermbg=248 ctermfg=252 gui=NONE guibg=DarkGrey guifg=LightGrey
+    CSAHi vimMenuMap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupSyncA term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+elseif has("gui_running") || &t_Co == 256
+    CSAHi Normal term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=NONE guibg=#2a2a2a guifg=#dcdccc
+    CSAHi vimEcho term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIf term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIsCommand term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExtCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFilter term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSet term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiCtermColor term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCmdSep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAuSyntax term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi PreProc term=NONE cterm=NONE ctermbg=235 ctermfg=146 gui=NONE guibg=bg guifg=#c2aed0
+    CSAHi Type term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi Underlined term=underline cterm=underline ctermbg=235 ctermfg=179 gui=underline guibg=bg guifg=#d4b064
+    CSAHi Ignore term=NONE cterm=NONE ctermbg=235 ctermfg=235 gui=NONE guibg=bg guifg=bg
+    CSAHi Error term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi Todo term=NONE cterm=NONE ctermbg=151 ctermfg=235 gui=NONE guibg=#aed0ae guifg=bg
+    CSAHi vimNormCmds term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoCmdSpace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi pythonSync term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPythonRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi SpecialKey term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi TermCursor term=reverse cterm=reverse ctermbg=bg ctermfg=fg gui=reverse guibg=bg guifg=fg
+    CSAHi TermCursorNC term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi NonText term=bold cterm=bold ctermbg=235 ctermfg=138 gui=bold guibg=bg guifg=#9f8f80
+    CSAHi Directory term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi ErrorMsg term=bold cterm=bold ctermbg=235 ctermfg=203 gui=bold guibg=bg guifg=#f07070
+    CSAHi IncSearch term=NONE cterm=NONE ctermbg=95 ctermfg=188 gui=NONE guibg=#866a4f guifg=fg
+    CSAHi Search term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi vimCollection term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstPat term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep4 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimClusterName term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynLine term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPatRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimOperParen term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi Cursor term=NONE cterm=NONE ctermbg=188 ctermfg=235 gui=NONE guibg=fg guifg=bg
+    CSAHi VisualNOS term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=144 gui=bold,underline guibg=bg guifg=#c0aa94
+    CSAHi lCursor term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi htmlBold term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi htmlItalic term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=italic guibg=bg guifg=fg
+    CSAHi htmlUnderline term=underline cterm=underline ctermbg=235 ctermfg=188 gui=underline guibg=bg guifg=fg
+    CSAHi SpellBad term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellCap term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellRare term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellLocal term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi Pmenu term=NONE cterm=NONE ctermbg=137 ctermfg=16 gui=NONE guibg=#a78869 guifg=#000000
+    CSAHi PmenuSel term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi PmenuSbar term=NONE cterm=NONE ctermbg=144 ctermfg=188 gui=NONE guibg=#B99F86 guifg=fg
+    CSAHi PmenuThumb term=NONE cterm=NONE ctermbg=231 ctermfg=235 gui=NONE guibg=#f7f7f1 guifg=bg
+    CSAHi TabLine term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi TabLineSel term=bold cterm=bold ctermbg=235 ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi vimGroupList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuPriority term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBody term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBlank term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimEscapeBrace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSetEqual term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinebreak term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRange term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiTermcap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserAttrbError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynKeyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFiletype term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMatchRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchCchar term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchGroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCollClass term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi MoreMsg term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi ModeMsg term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi LineNr term=NONE cterm=NONE ctermbg=235 ctermfg=138 gui=NONE guibg=bg guifg=#9f8f80
+    CSAHi CursorLineNr term=bold cterm=bold ctermbg=bg ctermfg=226 gui=bold guibg=bg guifg=Yellow
+    CSAHi Question term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi StatusLine term=bold cterm=bold ctermbg=59 ctermfg=231 gui=bold guibg=#736559 guifg=#f7f7f1
+    CSAHi StatusLineNC term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi VertSplit term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi Title term=bold cterm=bold ctermbg=bg ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi Visual term=NONE cterm=NONE ctermbg=59 ctermfg=fg gui=NONE guibg=#5f5f5f guifg=fg
+    CSAHi vimAutoCmdSfxList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCommentTitleLeader term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiLink term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoEventList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlUnderlineItalic term=underline cterm=underline ctermbg=235 ctermfg=188 gui=italic,underline guibg=bg guifg=fg
+    CSAHi vimGlobal term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiGuiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi TabLineFill term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi CursorColumn term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi CursorLine term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi ColorColumn term=NONE cterm=NONE ctermbg=88 ctermfg=fg gui=NONE guibg=DarkRed guifg=fg
+    CSAHi MatchParen term=NONE cterm=NONE ctermbg=30 ctermfg=fg gui=NONE guibg=#008b8b guifg=fg
+    CSAHi Comment term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Constant term=NONE cterm=NONE ctermbg=235 ctermfg=150 gui=NONE guibg=bg guifg=#afe091
+    CSAHi Special term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi Identifier term=NONE cterm=NONE ctermbg=235 ctermfg=181 gui=NONE guibg=bg guifg=#dabfa5
+    CSAHi Statement term=bold cterm=bold ctermbg=235 ctermfg=180 gui=bold guibg=bg guifg=#e0af91
+    CSAHi pythonSpaceError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiKeyList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimStdPlugin term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhsExtend term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExecute term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldItalic term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold,italic guibg=bg guifg=fg
+    CSAHi vimFunction term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderline term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,underline guibg=bg guifg=fg
+    CSAHi vimSynRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynPatMod term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLines term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncMatch term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderlineItalic term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,italic,underline guibg=bg guifg=fg
+    CSAHi vimMapLhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinecont term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi WarningMsg term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi WildMenu term=bold cterm=bold ctermbg=144 ctermfg=235 gui=bold guibg=#c0aa94 guifg=bg
+    CSAHi Folded term=NONE cterm=NONE ctermbg=233 ctermfg=144 gui=NONE guibg=#101010 guifg=#c2b680
+    CSAHi FoldColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi DiffAdd term=NONE cterm=NONE ctermbg=28 ctermfg=188 gui=NONE guibg=#008b00 guifg=fg
+    CSAHi DiffChange term=NONE cterm=NONE ctermbg=18 ctermfg=188 gui=NONE guibg=#00008b guifg=fg
+    CSAHi DiffDelete term=NONE cterm=NONE ctermbg=88 ctermfg=188 gui=NONE guibg=#8b0000 guifg=fg
+    CSAHi DiffText term=bold cterm=bold ctermbg=20 ctermfg=188 gui=bold guibg=#0000cd guifg=fg
+    CSAHi SignColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Conceal term=NONE cterm=NONE ctermbg=248 ctermfg=252 gui=NONE guibg=DarkGrey guifg=LightGrey
+    CSAHi vimMenuMap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupSyncA term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+elseif has("gui_running") || &t_Co == 256
+    CSAHi Normal term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=NONE guibg=#2a2a2a guifg=#dcdccc
+    CSAHi vimEcho term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIf term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimIsCommand term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExtCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFilter term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSet term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiCtermColor term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserCmd term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCmdSep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAuSyntax term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi PreProc term=NONE cterm=NONE ctermbg=235 ctermfg=146 gui=NONE guibg=bg guifg=#c2aed0
+    CSAHi Type term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi Underlined term=underline cterm=underline ctermbg=235 ctermfg=179 gui=underline guibg=bg guifg=#d4b064
+    CSAHi Ignore term=NONE cterm=NONE ctermbg=235 ctermfg=235 gui=NONE guibg=bg guifg=bg
+    CSAHi Error term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi Todo term=NONE cterm=NONE ctermbg=151 ctermfg=235 gui=NONE guibg=#aed0ae guifg=bg
+    CSAHi vimNormCmds term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoCmdSpace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi pythonSync term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPythonRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi SpecialKey term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi TermCursor term=reverse cterm=reverse ctermbg=bg ctermfg=fg gui=reverse guibg=bg guifg=fg
+    CSAHi TermCursorNC term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi NonText term=bold cterm=bold ctermbg=235 ctermfg=138 gui=bold guibg=bg guifg=#9f8f80
+    CSAHi Directory term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi ErrorMsg term=bold cterm=bold ctermbg=235 ctermfg=203 gui=bold guibg=bg guifg=#f07070
+    CSAHi IncSearch term=NONE cterm=NONE ctermbg=95 ctermfg=188 gui=NONE guibg=#866a4f guifg=fg
+    CSAHi Search term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi vimCollection term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstPat term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep4 term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimClusterName term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynLine term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimPatRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimOperParen term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi Cursor term=NONE cterm=NONE ctermbg=188 ctermfg=235 gui=NONE guibg=fg guifg=bg
+    CSAHi VisualNOS term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=144 gui=bold,underline guibg=bg guifg=#c0aa94
+    CSAHi lCursor term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi htmlBold term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi htmlItalic term=NONE cterm=NONE ctermbg=235 ctermfg=188 gui=italic guibg=bg guifg=fg
+    CSAHi htmlUnderline term=underline cterm=underline ctermbg=235 ctermfg=188 gui=underline guibg=bg guifg=fg
+    CSAHi SpellBad term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellCap term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellRare term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi SpellLocal term=undercurl cterm=undercurl ctermbg=bg ctermfg=fg gui=undercurl guibg=bg guifg=fg
+    CSAHi Pmenu term=NONE cterm=NONE ctermbg=137 ctermfg=16 gui=NONE guibg=#a78869 guifg=#000000
+    CSAHi PmenuSel term=NONE cterm=NONE ctermbg=144 ctermfg=235 gui=NONE guibg=#c0aa94 guifg=bg
+    CSAHi PmenuSbar term=NONE cterm=NONE ctermbg=144 ctermfg=188 gui=NONE guibg=#B99F86 guifg=fg
+    CSAHi PmenuThumb term=NONE cterm=NONE ctermbg=231 ctermfg=235 gui=NONE guibg=#f7f7f1 guifg=bg
+    CSAHi TabLine term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi TabLineSel term=bold cterm=bold ctermbg=235 ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi vimGroupList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuPriority term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBody term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFuncBlank term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimEscapeBrace term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSetEqual term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinebreak term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRep term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSubstRange term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiTermcap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimUserAttrbError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynKeyRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimFiletype term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMatchRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchCchar term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynMtchGroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCollClass term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiBang term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi MoreMsg term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi ModeMsg term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold guibg=bg guifg=fg
+    CSAHi LineNr term=NONE cterm=NONE ctermbg=235 ctermfg=138 gui=NONE guibg=bg guifg=#9f8f80
+    CSAHi CursorLineNr term=bold cterm=bold ctermbg=bg ctermfg=226 gui=bold guibg=bg guifg=Yellow
+    CSAHi Question term=bold cterm=bold ctermbg=235 ctermfg=181 gui=bold guibg=bg guifg=#dabfa5
+    CSAHi StatusLine term=bold cterm=bold ctermbg=59 ctermfg=231 gui=bold guibg=#736559 guifg=#f7f7f1
+    CSAHi StatusLineNC term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi VertSplit term=NONE cterm=NONE ctermbg=59 ctermfg=231 gui=NONE guibg=#564d43 guifg=#f7f7f1
+    CSAHi Title term=bold cterm=bold ctermbg=bg ctermfg=231 gui=bold guibg=bg guifg=#f7f7f1
+    CSAHi Visual term=NONE cterm=NONE ctermbg=59 ctermfg=fg gui=NONE guibg=#5f5f5f guifg=fg
+    CSAHi vimAutoCmdSfxList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimCommentTitleLeader term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiLink term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAutoEventList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlUnderlineItalic term=underline cterm=underline ctermbg=235 ctermfg=188 gui=italic,underline guibg=bg guifg=fg
+    CSAHi vimGlobal term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiGuiFontname term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi TabLineFill term=underline cterm=underline ctermbg=59 ctermfg=231 gui=underline guibg=#564d43 guifg=#f7f7f1
+    CSAHi CursorColumn term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi CursorLine term=NONE cterm=NONE ctermbg=237 ctermfg=fg gui=NONE guibg=#3f3f3f guifg=fg
+    CSAHi ColorColumn term=NONE cterm=NONE ctermbg=88 ctermfg=fg gui=NONE guibg=DarkRed guifg=fg
+    CSAHi MatchParen term=NONE cterm=NONE ctermbg=30 ctermfg=fg gui=NONE guibg=#008b8b guifg=fg
+    CSAHi Comment term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Constant term=NONE cterm=NONE ctermbg=235 ctermfg=150 gui=NONE guibg=bg guifg=#afe091
+    CSAHi Special term=NONE cterm=NONE ctermbg=235 ctermfg=179 gui=NONE guibg=bg guifg=#d4b064
+    CSAHi Identifier term=NONE cterm=NONE ctermbg=235 ctermfg=181 gui=NONE guibg=bg guifg=#dabfa5
+    CSAHi Statement term=bold cterm=bold ctermbg=235 ctermfg=180 gui=bold guibg=bg guifg=#e0af91
+    CSAHi pythonSpaceError term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimHiKeyList term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimStdPlugin term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMapRhsExtend term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroup term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimExecute term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldItalic term=bold cterm=bold ctermbg=235 ctermfg=188 gui=bold,italic guibg=bg guifg=fg
+    CSAHi vimFunction term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderline term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,underline guibg=bg guifg=fg
+    CSAHi vimSynRegion term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSynPatMod term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLines term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncMatch term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi htmlBoldUnderlineItalic term=bold,underline cterm=bold,underline ctermbg=235 ctermfg=188 gui=bold,italic,underline guibg=bg guifg=fg
+    CSAHi vimMapLhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimSyncLinecont term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi WarningMsg term=NONE cterm=NONE ctermbg=235 ctermfg=203 gui=NONE guibg=bg guifg=#f07070
+    CSAHi WildMenu term=bold cterm=bold ctermbg=144 ctermfg=235 gui=bold guibg=#c0aa94 guifg=bg
+    CSAHi Folded term=NONE cterm=NONE ctermbg=233 ctermfg=144 gui=NONE guibg=#101010 guifg=#c2b680
+    CSAHi FoldColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi DiffAdd term=NONE cterm=NONE ctermbg=28 ctermfg=188 gui=NONE guibg=#008b00 guifg=fg
+    CSAHi DiffChange term=NONE cterm=NONE ctermbg=18 ctermfg=188 gui=NONE guibg=#00008b guifg=fg
+    CSAHi DiffDelete term=NONE cterm=NONE ctermbg=88 ctermfg=188 gui=NONE guibg=#8b0000 guifg=fg
+    CSAHi DiffText term=bold cterm=bold ctermbg=20 ctermfg=188 gui=bold guibg=#0000cd guifg=fg
+    CSAHi SignColumn term=NONE cterm=NONE ctermbg=235 ctermfg=144 gui=NONE guibg=bg guifg=#c2b680
+    CSAHi Conceal term=NONE cterm=NONE ctermbg=248 ctermfg=252 gui=NONE guibg=DarkGrey guifg=LightGrey
+    CSAHi vimMenuMap term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimAugroupSyncA term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+    CSAHi vimMenuRhs term=NONE cterm=NONE ctermbg=bg ctermfg=fg gui=NONE guibg=bg guifg=fg
+endif
+
+if 1
+    delcommand CSAHi
+endif
